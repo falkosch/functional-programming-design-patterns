@@ -1,0 +1,32 @@
+{
+  "name": "functional-programming-design-patterns",
+  "author": "Falko Schwabe",
+  "version": "1.0.0",
+  "description": "Popular software design patterns in functional programming.",
+  "keywords": [
+    "software-design-patterns",
+    "functional-programming"
+  ],
+  "license": "See license in file 'LICENSE'",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/falkosch/functional-programming-design-patterns.git"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "dev": "cross-env TS_NODE_PROJECT=./tsconfig.json ts-node-dev --inspect --respawn ./src src/index.ts"
+  },
+  "bugs": {
+    "url": "https://github.com/falkosch/functional-programming-design-patterns/issues"
+  },
+  "homepage": "https://github.com/falkosch/functional-programming-design-patterns#readme",
+  "devDependencies": {
+    "@types/node": "^12.12.14",
+    "cross-env": "^6.0.3",
+    "ts-node": "^8.5.4",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.2"
+  }
+}

@@ -6,6 +6,6 @@ This project demonstrates popular software design patterns of Object-Oriented pr
 
 You will find runnable examples in `lib/<name of pattern>/*` for each demonstrated software design pattern:
 
-* [Strategy Pattern](./src/strategy/README.md)
-* [Facade Pattern](./src/facade/README.md)
-* many more to come...
+* [Strategy Pattern](./src/strategy/)
+* [Facade Pattern](./src/facade/)
+* [(more to come...)](./src/)

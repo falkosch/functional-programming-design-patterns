@@ -52,7 +52,7 @@ interface SortAlgorithm<T> {
   (elements: ReadonlyArray<T>, comparer: SortComparer<T>): T[];
 }
 
-// Represents the facade as an immutable value representation
+// Represents the facade as a value representation
 interface AlgorithmFacade<T> {
   join(elements: ReadonlyArray<T>, separator: string): string;
   search(elements: ReadonlyArray<T>, contains: T): number;
@@ -133,7 +133,7 @@ const facadeDemonstrator: Demonstrator = async () => {
   const facadeVR = {
     ...facade(),
     sort(elements: ReadonlyArray<string>) {
-      // just do not sort as an example
+      // Just do not sort as an example
       return [...elements];
     }
   };

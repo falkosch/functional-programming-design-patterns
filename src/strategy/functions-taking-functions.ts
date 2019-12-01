@@ -33,7 +33,7 @@ const quickSortTakingPivotSelector: QuickSortTakingPivotSelector = (
 ) => {
   const elementsCopy = [...elements];
 
-  // partition part of quick sort
+  // Partition part of quick sort
   function partition(left: number, right: number) {
     const pivot = elementsCopy[pivotSelector(left, right)];
     let j = right;
@@ -49,7 +49,7 @@ const quickSortTakingPivotSelector: QuickSortTakingPivotSelector = (
     return j;
   }
 
-  // recursive part of quick sort
+  // Recursive part of quick sort
   function actualQuickSort(left: number, right: number) {
     if (left < right) {
       const p = partition(left, right);
@@ -66,27 +66,23 @@ const demonstrator: Demonstrator = async () => {
   console.log("\n\t--- functions taking functions example ---");
 
   Object.entries({
-    // each pivot selector can change the behavior of our sort function
+    // Each pivot selector can change the behavior of our sort function
     left: (left: number, __right: number) => left,
     "(left+right)/2": (left: number, right: number) =>
       Math.floor((left + right) / 2),
     right: (__left: number, right: number) => right
-  }).forEach(([pivotSelectorName, pivotSelector]) =>
-    [
-      [0, 1, 2, 3, 4],
-      [1, 0],
-      [4, 1, 0, 11, -1, 3]
-    ].forEach(elements =>
-      console.log(
-        elements,
-        ' and pivot selector "',
-        pivotSelectorName,
-        '" -> ',
-        // it is still the same sort function, but modified by the behavior of the pivot selector
-        quickSortTakingPivotSelector(elements, pivotSelector)
-      )
-    )
-  );
+  }).forEach(([pivotSelectorName, pivotSelector]) => {
+    const unsorted = [4, 1, 0, 11, -1, 3];
+
+    // Although we change the behavior of quick sort, it should still return a sorted array
+    console.log(
+      unsorted,
+      ' and pivot selector "',
+      pivotSelectorName,
+      '" -> ',
+      quickSortTakingPivotSelector(unsorted, pivotSelector)
+    );
+  });
 };
 
 export default demonstrator;

@@ -46,7 +46,7 @@ const quickSortProvidingPivotSelector: QuickSortProvidingPivotSelector = pivotSe
   return elements => {
     const elementsCopy = [...elements];
 
-    // partition part of quick sort
+    // Partition part of quick sort
     function partition(left: number, right: number) {
       const pivot = elementsCopy[pivotSelector(left, right)];
       let j = right;
@@ -62,7 +62,7 @@ const quickSortProvidingPivotSelector: QuickSortProvidingPivotSelector = pivotSe
       return j;
     }
 
-    // recursive part of quick sort
+    // Recursive part of quick sort
     function actualQuickSort(left: number, right: number) {
       if (left < right) {
         const p = partition(left, right);
@@ -84,21 +84,18 @@ const demonstrator: Demonstrator = async () => {
     PivotSelectBehavior.Middle,
     PivotSelectBehavior.Right
   ].forEach(pivotSelectBehavior => {
-    // giving a pivot select behavior returns us a concrete sort function with the wanted behavior
+    // Giving a pivot select behavior returns us a concrete sort function with the wanted behavior
     const sorter = quickSortProvidingPivotSelector(pivotSelectBehavior);
 
-    [
-      [0, 1, 2, 3, 4],
-      [1, 0],
-      [4, 1, 0, 11, -1, 3]
-    ].forEach(elements =>
-      console.log(
-        elements,
-        ' and behavior "',
-        PivotSelectBehavior[pivotSelectBehavior],
-        '" -> ',
-        sorter(elements)
-      )
+    const unsorted = [4, 1, 0, 11, -1, 3];
+
+    // Although we change the behavior of quick sort, it should still return a sorted array
+    console.log(
+      unsorted,
+      ' and behavior "',
+      PivotSelectBehavior[pivotSelectBehavior],
+      '" -> ',
+      sorter(unsorted)
     );
   });
 };

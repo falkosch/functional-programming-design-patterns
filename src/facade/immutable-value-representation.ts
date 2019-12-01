@@ -44,7 +44,7 @@ interface SortAlgorithm<T> {
   (elements: ReadonlyArray<T>, comparer: SortComparer<T>): T[];
 }
 
-// Represents the facade as an immutable value representation
+// Represents the facade as a value representation
 interface AlgorithmFacade<T> {
   join(elements: ReadonlyArray<T>, separator: string): string;
   search(elements: ReadonlyArray<T>, contains: T): number;
@@ -57,6 +57,7 @@ interface AlgorithmFacadeCreator<T> {
     search: SearchAlgorithm<T>,
     sort: SortAlgorithm<T>
   ): Readonly<AlgorithmFacade<T>>;
+  // The Readonly on the return type AlgorithmFacade<T> means it is immutable
 }
 
 // Concrete implementations for strings as an example
@@ -86,6 +87,8 @@ const algorithmFacadeCreator: AlgorithmFacadeCreator<string> = (
   searchAlgorithm,
   sortAlgorithm
 ) =>
+  // Object.freeze enforces immutability at runtime: Even removing the Readonly constraint on TS
+  // level like "(x as any).sort = ..." will not have an effect anymore
   Object.freeze({
     join(elements, separator) {
       return joinAlgorithm(elements, separator);

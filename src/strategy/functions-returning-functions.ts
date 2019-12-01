@@ -6,22 +6,28 @@ enum PivotSelectBehavior {
   Right
 }
 
-// The OOP variant (outlined, not implemented)
+// The OOP variant outlined
+
 interface SortAlgorithmOOP {
   sort(elements: ReadonlyArray<number>): number[];
 }
+
 interface QuickSortProvidingPivotSelectStrategyOOP extends SortAlgorithmOOP {
-  // actual constructor parameter
+  // Actual constructor parameter
   pivotSelectBehavior: PivotSelectBehavior;
 }
 
 // The FP variant
+
 interface SortAlgorithm {
   (elements: ReadonlyArray<number>): number[];
 }
+
 interface QuickSortProvidingPivotSelector {
   (pivotSelectBehavior: PivotSelectBehavior): SortAlgorithm;
 }
+
+// Concrete implementation
 
 const quickSortProvidingPivotSelector: QuickSortProvidingPivotSelector = pivotSelectBehavior => {
   interface PivotSelector {
@@ -78,6 +84,7 @@ const demonstrator: Demonstrator = async () => {
     PivotSelectBehavior.Middle,
     PivotSelectBehavior.Right
   ].forEach(pivotSelectBehavior => {
+    // giving a pivot select behavior returns us a concrete sort function with the wanted behavior
     const sorter = quickSortProvidingPivotSelector(pivotSelectBehavior);
 
     [

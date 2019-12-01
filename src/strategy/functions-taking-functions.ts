@@ -1,24 +1,31 @@
 import { Demonstrator } from "../Demonstrator.meta-model";
 
-// The OOP variant (outlined, not implemented)
+// The OOP variant outlined
+
 interface PivotSelectStrategyOOP {
   indexOfPivot(left: number, right: number): number;
 }
+
 interface SortAlgorithmOOP {
   sort(elements: ReadonlyArray<number>): number[];
 }
+
 interface QuickSortTakingPivotSelectStrategyOOP extends SortAlgorithmOOP {
-  // actual constructor parameter
+  // Actual constructor parameter
   pivotSelectStrategy: PivotSelectStrategyOOP;
 }
 
 // The FP variant
+
 interface PivotSelector {
   (left: number, right: number): number;
 }
+
 interface QuickSortTakingPivotSelector {
   (elements: ReadonlyArray<number>, pivotSelector: PivotSelector): number[];
 }
+
+// Concrete implementation
 
 const quickSortTakingPivotSelector: QuickSortTakingPivotSelector = (
   elements,
@@ -59,6 +66,7 @@ const demonstrator: Demonstrator = async () => {
   console.log("\n\t--- functions taking functions example ---");
 
   Object.entries({
+    // each pivot selector can change the behavior of our sort function
     left: (left: number, __right: number) => left,
     "(left+right)/2": (left: number, right: number) =>
       Math.floor((left + right) / 2),
@@ -74,6 +82,7 @@ const demonstrator: Demonstrator = async () => {
         ' and pivot selector "',
         pivotSelectorName,
         '" -> ',
+        // it is still the same sort function, but modified by the behavior of the pivot selector
         quickSortTakingPivotSelector(elements, pivotSelector)
       )
     )

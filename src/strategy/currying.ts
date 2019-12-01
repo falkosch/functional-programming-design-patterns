@@ -1,15 +1,20 @@
 import { Demonstrator } from "../Demonstrator.meta-model";
 
-// The OOP variant (outlined, not implemented)
+// The OOP variant outlined
+
 interface SortAlgorithmOOP {
   sort(elements: ReadonlyArray<number>): number[];
 }
+
 interface PivotSelectStrategyOOP {
   indexOfPivot(left: number, right: number): number;
 }
+
 interface QuickSortTakingPivotSelectStrategyOOP {
-  // would wrap the call to this.sort(...) as a new instance of SortAlgorithmOOP
+  // Wraps the call to this.sort(...) as a new instance of SortAlgorithmOOP
   wrapSort(pivotSelectStrategy: PivotSelectStrategyOOP): SortAlgorithmOOP;
+
+  // Actual sort
   sort(
     elements: ReadonlyArray<number>,
     pivotSelectStrategy: PivotSelectStrategyOOP
@@ -17,15 +22,20 @@ interface QuickSortTakingPivotSelectStrategyOOP {
 }
 
 // The FP variant
+
 interface SortAlgorithm {
   (elements: ReadonlyArray<number>): number[];
 }
+
 interface PivotSelector {
   (left: number, right: number): number;
 }
+
 interface QuickSortTakingPivotSelector {
   (elements: ReadonlyArray<number>, pivotSelector: PivotSelector): number[];
 }
+
+// Concrete implementation
 
 const quickSortTakingPivotSelector: QuickSortTakingPivotSelector = (
   elements,
@@ -71,6 +81,7 @@ const demonstrator: Demonstrator = async () => {
       Math.floor((left + right) / 2),
     right: (__left: number, right: number) => right
   }).forEach(([pivotSelectorName, pivotSelector]) => {
+    // here the pivot selector is curried
     const wrappingSorter: SortAlgorithm = elements =>
       quickSortTakingPivotSelector(elements, pivotSelector);
 

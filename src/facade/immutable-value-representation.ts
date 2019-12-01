@@ -73,7 +73,7 @@ const searcher: SearchAlgorithm<string> = (elements, contains) =>
   }, -1);
 
 const sorter: SortAlgorithm<string> = (elements, comparer) =>
-  (elements as any).sort(comparer);
+  [...elements].sort(comparer);
 
 const comparer: SortComparer<string> = (a, b) => {
   if (a < b) return -1;

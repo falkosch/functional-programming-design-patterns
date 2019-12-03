@@ -1,6 +1,8 @@
 # functional-programming-design-patterns
 
-This project demonstrates popular software design patterns of Object-Oriented programming adopted for functional programming. It doesn't re-implement OOP patterns in a weird FP like way. I rather want encourage you to think in a functional way instead of trying to solve occurring problems in the FP world with OOP.
+This project demonstrates how you can adopt popular software design patterns of Object-Oriented Programming for Functional Programming.
+
+The examples are open for discussion and shall only give an insight of how you can design your functions in a practical way.
 
 ## Demonstrated Patterns
 
@@ -9,3 +11,5 @@ You will find runnable examples in `lib/<name of pattern>/*` for each demonstrat
 * [Strategy Pattern](./src/strategy/)
 * [Facade Pattern](./src/facade/)
 * [(more to come...)](./src/)
+
+After `npm install`, run `npm start` to see the output of the examples.

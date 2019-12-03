@@ -102,7 +102,7 @@ const algorithmFacadeCreator: AlgorithmFacadeCreator<string> = (
   });
 
 const facadeDemonstrator: Demonstrator = async () => {
-  console.log("\n\t--- facade example ---");
+  console.log("\n\t--- facade IVR example ---");
 
   const elements = ["c", "b", "a"];
   const facade = algorithmFacadeCreator(joiner, searcher, sorter);

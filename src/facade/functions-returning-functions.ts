@@ -34,6 +34,11 @@ interface AlgorithmFacadeFactoryOOP<T> {
   createFacade(): AlgorithmFacadeOOP<T>;
 }
 
+interface AlgorithmFacadeDecoratorOOP<T> extends AlgorithmFacadeOOP<T> {
+  // Actual constructor parameter
+  facadeToDecorate: AlgorithmFacadeOOP<T>;
+}
+
 // The FP variant
 
 interface JoinAlgorithm<T> {
@@ -53,10 +58,14 @@ interface SortAlgorithm<T> {
 }
 
 // Represents the facade as a value representation
-interface AlgorithmFacade<T> {
+interface AlgorithmFacadeValue<T> {
   join(elements: ReadonlyArray<T>, separator: string): string;
   search(elements: ReadonlyArray<T>, contains: T): number;
   sort(elements: ReadonlyArray<T>): T[];
+}
+
+interface AlgorithmFacade<T> {
+  (): AlgorithmFacadeValue<T>;
 }
 
 interface AlgorithmFacadeCreator<T> {
@@ -64,7 +73,11 @@ interface AlgorithmFacadeCreator<T> {
     join: JoinAlgorithm<T>,
     search: SearchAlgorithm<T>,
     sort: SortAlgorithm<T>
-  ): () => AlgorithmFacade<T>;
+  ): AlgorithmFacade<T>;
+}
+
+interface AlgorithmFacadeDecorator<T> {
+  (facadeToDecorate: AlgorithmFacade<T>): AlgorithmFacade<T>;
 }
 
 // Concrete implementations for strings as an example
@@ -94,7 +107,7 @@ const algorithmFacadeCreator: AlgorithmFacadeCreator<string> = (
   searchAlgorithm,
   sortAlgorithm
 ) => () => {
-  console.debug("creating new IVR for facade");
+  console.debug("creating facade's value representation");
   return {
     join(elements, separator) {
       return joinAlgorithm(elements, separator);
@@ -108,49 +121,40 @@ const algorithmFacadeCreator: AlgorithmFacadeCreator<string> = (
   };
 };
 
-const facadeDemonstrator: Demonstrator = async () => {
-  console.log("\n\t--- facade example ---");
-
-  const elements = ["c", "b", "a"];
-  const facade = algorithmFacadeCreator(joiner, searcher, sorter);
-
-  console.log(
-    "join: ",
-    joiner(elements, ","),
-    "==",
-    facade().join(elements, ",")
-  );
-
-  console.log(
-    "search: ",
-    searcher(elements, "b"),
-    "==",
-    facade().search(elements, "b")
-  );
-
-  // Let's try to manipulate the facade's value representation and see what is
-  // happening with any future use of "facade()"
-  const facadeVR = {
-    ...facade(),
-    sort(elements: ReadonlyArray<string>) {
-      // Just do not sort as an example
+const algorithmFacadeDecorator: AlgorithmFacadeDecorator<string> = (
+  facadeToDecorate: AlgorithmFacade<string>
+) => () => {
+  const originalFacadeValue = facadeToDecorate();
+  console.debug("creating decorated facade's value representation");
+  return {
+    ...originalFacadeValue,
+    sort(elements) {
       return [...elements];
     }
   };
+};
 
-  console.log(
-    "sort with facade manipulation: ",
-    sorter(elements, comparer),
-    "==",
-    facadeVR.sort(elements)
-  );
+const facadeDemonstrator: Demonstrator = async () => {
+  console.log("\n\t--- facade FrF example ---");
 
-  console.log(
-    "sort without facade manipulation: ",
-    sorter(elements, comparer),
-    "==",
-    facade().sort(elements)
-  );
+  const elements = ["c", "b", "a"];
+  const facade = algorithmFacadeCreator(joiner, searcher, sorter);
+  const decoratedFacade = algorithmFacadeDecorator(facade);
+
+  console.log("\n--- join:");
+  console.log("by function", joiner(elements, ","));
+  console.log("by facade", facade().join(elements, ","));
+  console.log("by decorated facade", decoratedFacade().join(elements, ","));
+
+  console.log("\n--- search:");
+  console.log("by function", searcher(elements, "b"));
+  console.log("by facade", facade().search(elements, "b"));
+  console.log("by decorated facade", decoratedFacade().search(elements, "b"));
+
+  console.log("\n--- sort:");
+  console.log("by function", sorter(elements, comparer));
+  console.log("by facade", facade().sort(elements));
+  console.log("by decorated facade", decoratedFacade().sort(elements));
 };
 
 export default facadeDemonstrator;

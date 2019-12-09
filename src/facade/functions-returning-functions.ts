@@ -106,31 +106,37 @@ const algorithmFacadeCreator: AlgorithmFacadeCreator<string> = (
   joinAlgorithm,
   searchAlgorithm,
   sortAlgorithm
-) => () => {
-  console.debug("creating facade's value representation");
-  return {
-    join(elements, separator) {
-      return joinAlgorithm(elements, separator);
-    },
-    search(elements, contains) {
-      return searchAlgorithm(elements, contains);
-    },
-    sort(elements) {
-      return sortAlgorithm(elements, (a, b) => comparer(a, b));
-    }
+) => {
+  console.debug("returning facade's function");
+  return () => {
+    console.debug("creating facade's IVR");
+    return Object.freeze({
+      join(elements, separator) {
+        return joinAlgorithm(elements, separator);
+      },
+      search(elements, contains) {
+        return searchAlgorithm(elements, contains);
+      },
+      sort(elements) {
+        return sortAlgorithm(elements, (a, b) => comparer(a, b));
+      }
+    });
   };
 };
 
 const algorithmFacadeDecorator: AlgorithmFacadeDecorator<string> = (
   facadeToDecorate: AlgorithmFacade<string>
-) => () => {
-  const originalFacadeValue = facadeToDecorate();
-  console.debug("creating decorated facade's value representation");
-  return {
-    ...originalFacadeValue,
-    sort(elements) {
-      return [...elements];
-    }
+) => {
+  console.debug("returning decorated facade's function");
+  return () => {
+    const originalFacadeIVR = facadeToDecorate();
+    console.debug("creating decorated facade's IVR");
+    return {
+      ...originalFacadeIVR,
+      sort(elements) {
+        return [...elements];
+      }
+    };
   };
 };
 
